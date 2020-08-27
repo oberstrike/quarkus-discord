@@ -8,4 +8,4 @@ pluginManagement {
       id 'io.quarkus' version "${quarkusPluginVersion}"
     }
 }
-rootProject.name='quarkus-discord'
+rootProject.name='ranked-system-rest-api-discord'
