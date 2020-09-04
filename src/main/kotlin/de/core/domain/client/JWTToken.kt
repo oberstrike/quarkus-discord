@@ -1,4 +1,4 @@
-package de.core.domain
+package de.core.domain.client
 
 import java.math.BigDecimal
 

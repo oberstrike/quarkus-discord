@@ -6,6 +6,9 @@ import de.core.domain.verification.VerificationTokenRepository
 import io.quarkus.oidc.runtime.OidcJwtCallerPrincipal
 import io.quarkus.security.Authenticated
 import io.quarkus.security.identity.SecurityIdentity
+import org.eclipse.microprofile.openapi.annotations.Operation
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirements
 import org.eclipse.microprofile.openapi.annotations.tags.Tag
 import org.eclipse.microprofile.openapi.annotations.tags.Tags
 import java.util.*
@@ -18,7 +21,7 @@ import javax.ws.rs.core.MediaType
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Tags(
-        Tag(name = "DiscordUser", description = "The path to manage the discord user")
+    Tag(name = "DiscordUser", description = "The path to manage the discord user")
 )
 class DiscordUserResource {
 
@@ -31,9 +34,38 @@ class DiscordUserResource {
     @Inject
     lateinit var verificationTokenRepository: VerificationTokenRepository
 
+
+    @GET
+    @Authenticated
+    @SecurityRequirements(
+        value = [
+            SecurityRequirement(name = "bearerAuth")
+        ]
+    )
+    @Path("/user")
+    fun getUser(@QueryParam("id") userId: String?): DiscordUserDTO {
+        if (userId == null) throw BadRequestException()
+        val user = discordUserRepository.findByUserId(userId) ?: throw NotFoundException()
+        return DiscordUserDTO(
+            id = user.id!!,
+            userId = user.userId,
+            verified = user.verified
+        )
+    }
+
+
+    @Operation(
+        operationId = "getVerificationTokenSecured",
+        description = "returns when the user isn't verified a token"
+    )
     @GET
     @Authenticated
     @Transactional
+    @SecurityRequirements(
+        value = [
+            SecurityRequirement(name = "bearerAuth")
+        ]
+    )
     fun addDiscordUserResource(): VerificationTokenDTO {
         val userId = (securityIdentity.principal as OidcJwtCallerPrincipal).claims.getClaimValueAsString("sub")
 
@@ -66,6 +98,15 @@ class DiscordUserResource {
     }
 
 
+    @Operation(
+        operationId = "confirmUserWithTokenSecured",
+        description = "Activates a discord user with a token as query param"
+    )
+    @SecurityRequirements(
+        value = [
+            SecurityRequirement(name = "bearerAuth")
+        ]
+    )
     @Path("/token")
     @GET
     @Authenticated

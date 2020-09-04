@@ -1,6 +1,6 @@
 package de.core.discord
 
-import de.core.domain.UserAuthClient
+import de.core.domain.client.UserAuthClient
 import io.restassured.http.ContentType
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.When

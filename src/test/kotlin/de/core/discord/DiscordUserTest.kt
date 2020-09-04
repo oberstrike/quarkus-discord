@@ -1,11 +1,8 @@
 package de.core.discord
 
-import de.core.domain.JWTToken
-import de.core.domain.verification.VerificationToken
+import de.core.domain.client.JWTToken
 import de.core.domain.verification.VerificationTokenDTO
 import io.quarkus.test.junit.QuarkusTest
-import io.restassured.RestAssured.given
-import org.hamcrest.CoreMatchers.`is`
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import javax.ws.rs.core.Form

@@ -7,7 +7,6 @@ import javax.persistence.Id
 @Entity
 class DiscordUser {
 
-
     @Id
     @GeneratedValue
     var id: Long? = null
@@ -16,3 +15,9 @@ class DiscordUser {
 
     var verified: Boolean = false
 }
+
+data class DiscordUserDTO(
+    val id: Long,
+    val userId: String,
+    val verified: Boolean
+)

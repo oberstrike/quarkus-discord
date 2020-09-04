@@ -8,6 +8,7 @@ import javax.persistence.OneToOne
 
 @Entity
 class VerificationToken {
+
     @Id
     @GeneratedValue
     var id: Long? = null
