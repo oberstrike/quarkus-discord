@@ -5,11 +5,23 @@ plugins {
 }
 
 repositories {
-     mavenLocal()
-     mavenCentral()
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url "https://dl.bintray.com/oberstrike/maven"
+    }
 }
 
 dependencies {
+
+    //Test
+    implementation("org.testcontainers:postgresql:1.14.3")
+    implementation 'com.maju.quarkus:testcontainer-quarkus:1.0.0'
+
+    implementation("com.github.dasniko:testcontainers-keycloak:1.4.0")
+    implementation("org.testcontainers:testcontainers:1.14.3")
+    implementation("org.testcontainers:junit-jupiter:1.14.3")
+
     implementation 'io.quarkus:quarkus-oidc'
     implementation 'io.quarkus:quarkus-config-yaml'
     implementation 'io.quarkus:quarkus-resteasy-jsonb'
@@ -23,6 +35,14 @@ dependencies {
     implementation 'io.quarkus:quarkus-jdbc-postgresql'
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:kotlin-extensions'
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        if (details.requested.name == 'log4j') {
+            details.useTarget "org.slf4j:log4j-over-slf4j:1.7.5"
+        }
+    }
 }
 
 group 'de.core.discord'
