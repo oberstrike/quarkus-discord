@@ -1,4 +1,4 @@
-# quarkus-discord project
+# Schnittstelle zwischen Discord und Siedler-Ranked
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
